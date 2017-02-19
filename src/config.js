@@ -3,11 +3,10 @@
  */
 
 export default {
-  port: 3000,
+  port: process.env.port || 3030,
   session: {
     secret: 'blog',
     key: 'blog',
     maxAge: 30 * 24 * 60 * 60 * 1000, // 保存一个月
   },
-  mongodb: 'mongodb://localhost:27017/blog',
 };

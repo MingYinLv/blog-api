@@ -13,9 +13,9 @@ import { PersonModel } from '../DB';
  * @returns {Promise}
  */
 export const login = ({ username, password }) => {
-  return PersonModel.find({
+  return PersonModel.findOne({
     username,
-    password: encrypt(password),
+    password,
   }).exec();
 };
 

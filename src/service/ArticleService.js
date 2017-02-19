@@ -9,12 +9,18 @@ import { ArticleModel } from '../DB';
 /**
  * 根据id查找文章
  * @param id
+ * @param fields 查询的字段
  * @returns {Promise}
  */
-export const findById = (id) => {
-  return ArticleModel.findOne({ _id: mongoose.Types.ObjectId(id) }).exec();
+export const findById = (id, fields = '-__v') => {
+  return ArticleModel.findOne({ _id: mongoose.Types.ObjectId(id) }, fields).exec();
 };
 
+/**
+ * 删除文章
+ * @param id 文章id
+ * @returns {Promise}
+ */
 export const deleteById = (id) => {
   return ArticleModel.remove(new ArticleModel({ _id: mongoose.Types.ObjectId(id) })).exec();
 };
@@ -24,10 +30,11 @@ export const deleteById = (id) => {
  * @param [keyword] 关键字
  * @param [page] 页码
  * @param [size] 数量
+ * @param fields 查询的字段
  */
-export const findList = ({ keyword = '', page = 1, size = 10 }) => {
+export const findList = ({ keyword = '', page = 1, size = 10 }, fields = '-__v') => {
   const reg = new RegExp(keyword, 'i');
-  return ArticleModel.find()
+  return ArticleModel.find({}, fields)
     .or([{
       title: reg,
     }, { content: reg }, { tag: reg }])
@@ -55,6 +62,10 @@ export const addArticle = (article) => {
   });
 };
 
+/**
+ * 根据id更新文章
+ * @param doc
+ */
 export const updateArticleById = (doc) => {
   const { _id, ...article } = doc;
   ArticleModel.update({ _id: mongoose.Types.ObjectId(_id) }, {
@@ -62,6 +73,12 @@ export const updateArticleById = (doc) => {
   }).exec();
 };
 
+/**
+ * 更新文章
+ * @param query 更新条件
+ * @param doc 更新内容
+ * @returns {Promise}
+ */
 export const updateArticle = (query, doc) => {
   return ArticleModel.update(query, doc).exec();
 };

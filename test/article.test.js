@@ -71,7 +71,7 @@ describe('文章接口测试', function () {
         content: '这是修改后的内容',
       }).then(function (result) {
         // 受影响的行数
-        expect(result.nModified).to.equal(1);
+        expect(result.n).to.equal(1);
         done();
       }).catch(function (err) {
         throw err;

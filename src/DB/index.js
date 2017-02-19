@@ -6,6 +6,7 @@ import mongoose from 'mongoose';
 import Promise from 'bluebird';
 import ArticleSchema from './Schema/ArticleSchema';
 import PersonSchema from './Schema/PersonSchema';
+import TypeSchema from './Schema/TypeSchema';
 
 mongoose.Promise = Promise;
 const db = mongoose.createConnection('localhost', 'blog');
@@ -13,4 +14,5 @@ const db = mongoose.createConnection('localhost', 'blog');
 
 export const ArticleModel = db.model('article', ArticleSchema, 'articles');
 export const PersonModel = db.model('person', PersonSchema, 'person');
+export const TypeModel = db.model('type', TypeSchema, 'type');
 
