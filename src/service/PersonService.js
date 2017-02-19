@@ -5,6 +5,7 @@
 import encrypt from '../util/encrypt';
 import { PersonModel } from '../DB';
 
+
 /**
  * 用户登陆
  * @param username 用户名
@@ -16,4 +17,9 @@ export const login = ({ username, password }) => {
     username,
     password: encrypt(password),
   }).exec();
+};
+
+export const updatePwd = (password) => {
+  // todo
+  return PersonModel.update(password).exec();
 };

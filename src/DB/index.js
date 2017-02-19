@@ -4,11 +4,12 @@
 
 import mongoose from 'mongoose';
 import Promise from 'bluebird';
+import ArticleSchema from './Schema/ArticleSchema';
+import PersonSchema from './Schema/PersonSchema';
 
 mongoose.Promise = Promise;
 const db = mongoose.createConnection('localhost', 'blog');
-import ArticleSchema from './Schema/ArticleSchema';
-import PersonSchema from './Schema/PersonSchema';
+
 
 export const ArticleModel = db.model('article', ArticleSchema, 'articles');
 export const PersonModel = db.model('person', PersonSchema, 'person');

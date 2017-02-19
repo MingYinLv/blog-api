@@ -3,8 +3,8 @@
  */
 
 import mongoose from 'mongoose';
-import { ArticleModel } from '../DB';
 import Promise from 'bluebird';
+import { ArticleModel } from '../DB';
 
 /**
  * 根据id查找文章
@@ -32,7 +32,8 @@ export const findList = ({ keyword = '', page = 1, size = 10 }) => {
       title: reg,
     }, { content: reg }, { tag: reg }])
     .skip((page - 1) * size)
-    .limit(size).exec();
+    .limit(size)
+    .exec();
 };
 
 /**
