@@ -4,8 +4,8 @@
 
 import { Router } from 'express';
 import { checkLogin } from '../middleware/check';
-import { findById, findList } from '../service/ArticleService';
-import { success } from '../util/responseTemplate';
+import { findById, findList, addArticle } from '../service/ArticleService';
+import { success, validateFaile, failed } from '../util/responseTemplate';
 
 const router = Router();
 
@@ -22,6 +22,37 @@ router.get('/:articleId', async (req, res) => {
   const { articleId } = req.params;
   const data = await findById(articleId);
   res.json(success(data));
+});
+
+// POST /article/add 添加文章
+router.post('/add', async (req, res) => {
+  const { title, content, author, tag, type } = req.body;
+
+  if (!title.trim()) {
+    res.json(validateFaile('标题不能为空'));
+  } else if (!content.trim()) {
+    res.json(validateFaile('内容不能为空'));
+  } else if (!type.trim() || type.length < 32) {
+    res.json(validateFaile('文章分类错误'));
+  } else {
+    addArticle({
+      title,
+      content,
+      author,
+      tag,
+      type,
+      publishDate: new Date(),
+      updateDate: new Date(),
+    }).then(({ result, line }) => {
+      if (line > 0) {
+        res.json(success(result, '添加成功'));
+      } else {
+        res.json(failed('添加失败'));
+      }
+    }).catch(() => {
+      res.json(failed('添加失败'));
+    });
+  }
 });
 
 export default router;
