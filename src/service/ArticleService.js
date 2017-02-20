@@ -2,9 +2,13 @@
  * Created by MingYin Lv on 2017/2/18 下午7:26.
  */
 
-import mongoose from 'mongoose';
-import Promise from 'bluebird';
+// import mongoose from 'mongoose';
+// import Promise from 'bluebird';
 import { ArticleModel } from '../DB';
+import {
+  findById as findByIdGenerator,
+  deleteById as deleteByIdGenerator, updateById, add
+} from './serviceUtil';
 
 /**
  * 根据id查找文章
@@ -12,18 +16,22 @@ import { ArticleModel } from '../DB';
  * @param fields 查询的字段
  * @returns {Promise}
  */
-export const findById = (id, fields = '-__v') => {
-  return ArticleModel.findOne({ _id: mongoose.Types.ObjectId(id) }, fields).exec();
-};
+  // export const findById = (id, fields = '-__v') => {
+  //   return ArticleModel.findOne({ _id: mongoose.Types.ObjectId(id) }, fields).exec();
+  // };
+
+export const findById = findByIdGenerator(ArticleModel);
 
 /**
  * 删除文章
  * @param id 文章id
  * @returns {Promise}
  */
-export const deleteById = (id) => {
-  return ArticleModel.remove(new ArticleModel({ _id: mongoose.Types.ObjectId(id) })).exec();
-};
+  // export const deleteById = (id) => {
+  //   return ArticleModel.remove(new ArticleModel({ _id: mongoose.Types.ObjectId(id) })).exec();
+  // };
+
+export const deleteById = deleteByIdGenerator(ArticleModel);
 
 /**
  * 查找文章列表
@@ -48,30 +56,34 @@ export const findList = ({ keyword = '', page = 1, size = 10 }, fields = '-__v')
  * @param article 文章对象
  * @returns {Promise}
  */
-export const addArticle = (article) => {
-  return new Promise((resolve, reject) => {
-    const articleEntity = new ArticleModel(article);
-    articleEntity.save((err, result, numberAffected) => {
-      if (err) reject(err);
-      // 返回保存的内容和受影响的行数
-      resolve({
-        result,
-        line: numberAffected,
-      });
-    });
-  });
-};
+  // export const addArticle = (article) => {
+  //   return new Promise((resolve, reject) => {
+  //     const articleEntity = new ArticleModel(article);
+  //     articleEntity.save((err, result, numberAffected) => {
+  //       if (err) reject(err);
+  //       // 返回保存的内容和受影响的行数
+  //       resolve({
+  //         result,
+  //         line: numberAffected,
+  //       });
+  //     });
+  //   });
+  // };
+
+export const addArticle = add(ArticleModel);
 
 /**
  * 根据id更新文章
  * @param doc
  */
-export const updateArticleById = (doc) => {
-  const { _id, ...article } = doc;
-  ArticleModel.update({ _id: mongoose.Types.ObjectId(_id) }, {
-    ...article,
-  }).exec();
-};
+  // export const updateArticleById = (doc) => {
+  //   const { _id, ...article } = doc;
+  //   return ArticleModel.update({ _id: mongoose.Types.ObjectId(_id) }, {
+  //     ...article,
+  //   }).exec();
+  // };
+
+export const updateArticleById = updateById(ArticleModel);
 
 /**
  * 更新文章

@@ -4,7 +4,7 @@
 
 import { Router } from 'express';
 import { checkLogin } from '../middleware/check';
-import { findById, findList, addArticle } from '../service/ArticleService';
+import { findById, findList, addArticle, deleteById } from '../service/ArticleService';
 import { success, validateFaile, failed } from '../util/responseTemplate';
 
 const router = Router();
@@ -25,7 +25,7 @@ router.get('/:articleId', async (req, res) => {
 });
 
 // POST /article/add 添加文章
-router.post('/add', async (req, res) => {
+router.post('/add', checkLogin, async (req, res) => {
   const { title, content, author, tag, type } = req.body;
 
   if (!title.trim()) {
@@ -53,6 +53,18 @@ router.post('/add', async (req, res) => {
       res.json(failed('添加失败'));
     });
   }
+});
+
+// POST /article/add 删除文章
+router.post('/delete', checkLogin, (req, res) => {
+  const { id } = req.body;
+  deleteById(id)
+    .then(() => {
+      res.json(success({}, '删除成功'));
+    })
+    .catch(() => {
+      res.json(failed(('删除失败')));
+    });
 });
 
 export default router;

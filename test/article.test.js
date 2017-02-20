@@ -78,6 +78,18 @@ describe('文章接口测试', function () {
       });
     });
 
+    it('根据id修改文章接口', function (done) {
+      updateArticleById({
+        _id: articleId,
+        content: '根据id修改后的内容'
+      }).then(function (result) {
+        expect(result.n).to.equal(1);
+        done();
+      }).catch(function (err) {
+        throw err;
+      })
+    });
+
     // 删除添加的数据
     after(function (done) {
       deleteById(articleId)
