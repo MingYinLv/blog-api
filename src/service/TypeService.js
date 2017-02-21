@@ -3,12 +3,12 @@
  */
 
 
-import mongoose from 'mongoose';
-import Promise from 'bluebird';
+// import mongoose from 'mongoose';
+// import Promise from 'bluebird';
 import { TypeModel } from '../DB';
 import {
   findById as findByIdGenerator,
-  deleteById as deleteByIdGenerator, updateById, add
+  deleteById as deleteByIdGenerator, updateById, add,
 } from './serviceUtil';
 
 /**

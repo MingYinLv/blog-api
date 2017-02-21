@@ -11,7 +11,6 @@ export const checkLogin = (req, res, next) => {
   if (!req.session.user) {
     res.set('Content-Type', 'application/json; charset=utf-8');
     res.end(noLoginJSON);
-    console.log(req.session.user);
     return;
   }
   next();

@@ -7,7 +7,7 @@
 import { ArticleModel } from '../DB';
 import {
   findById as findByIdGenerator,
-  deleteById as deleteByIdGenerator, updateById, add
+  deleteById as deleteByIdGenerator, updateById, add,
 } from './serviceUtil';
 
 /**

@@ -3,7 +3,7 @@
  */
 
 import { Router } from 'express';
-import { checkLogin } from '../middleware/check';
+// import { checkLogin } from '../middleware/check';
 import { login } from '../service/PersonService';
 import { success, failed } from '../util/responseTemplate';
 
