@@ -5,6 +5,9 @@
 export default (req, res, next) => {
   next();
   res.set({
-    'Content-Type': 'application/json; charset=utf-8',
+    'Access-Control-Allow-Origin': 'http://blog-admin.lvmingyin.com',
+    'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
+    'Access-Control-Allow-Credentials': true,
+    'Access-Control-Allow-Headers': 'x-requested-with,content-type',
   });
 };

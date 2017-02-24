@@ -9,6 +9,7 @@ import config from './config';
 import routes from './routes';
 import pkg from '../package.json';
 import { checkRefer } from './middleware/check';
+import setHeader from './middleware/setHeader';
 
 const app = express();
 
@@ -16,6 +17,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(checkRefer);
+app.use(setHeader);
 
 // session
 app.use(session({
