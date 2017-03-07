@@ -56,21 +56,30 @@ export const findList = ({ keyword = '', page = 1, size = 10 }, fields = '-__v')
  * @param article 文章对象
  * @returns {Promise}
  */
-  // export const addArticle = (article) => {
-  //   return new Promise((resolve, reject) => {
-  //     const articleEntity = new ArticleModel(article);
-  //     articleEntity.save((err, result, numberAffected) => {
-  //       if (err) reject(err);
-  //       // 返回保存的内容和受影响的行数
-  //       resolve({
-  //         result,
-  //         line: numberAffected,
-  //       });
-  //     });
-  //   });
-  // };
+export const addArticle = (article) => {
+  return new Promise((resolve, reject) => {
+    const articleEntity = new ArticleModel({
+      ...article,
+      publishDate: Date.now(),
+      updateDate: Date.now(),
+    });
+    articleEntity.save((err, result, numberAffected) => {
+      if (err) {
+        resolve({
+          result,
+          line: 0,
+        });
+      }
+      // 返回保存的内容和受影响的行数
+      resolve({
+        result,
+        line: numberAffected,
+      });
+    });
+  });
+};
 
-export const addArticle = add(ArticleModel);
+// export const addArticle = add(ArticleModel);
 
 /**
  * 根据id更新文章

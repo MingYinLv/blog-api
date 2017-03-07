@@ -27,6 +27,7 @@ router.get('/:articleId', async (req, res) => {
 // POST /article/add 添加文章
 router.post('/add', checkLogin, async (req, res) => {
   const { title, content, author, tag, type } = req.body;
+  const { user } = req.session;
 
   if (!title.trim()) {
     res.json(validateFaile('标题不能为空'));
@@ -38,13 +39,11 @@ router.post('/add', checkLogin, async (req, res) => {
     addArticle({
       title,
       content,
-      author,
+      author: user.username || '管理员',
       tag,
       type,
-      publishDate: new Date(),
-      updateDate: new Date(),
     }).then(({ result, line }) => {
-      if (line > 0) {
+      if (line > 0 && result) {
         res.json(success(result, '添加成功'));
       } else {
         res.json(failed('添加失败'));
@@ -55,12 +54,16 @@ router.post('/add', checkLogin, async (req, res) => {
   }
 });
 
-// POST /article/add 删除文章
+// POST /article/delete 删除文章
 router.post('/delete', checkLogin, (req, res) => {
   const { id } = req.body;
   deleteById(id)
-    .then(() => {
-      res.json(success({}, '删除成功'));
+    .then(({ result }) => {
+      if (result.n > 0) {
+        res.json(success({}, '删除成功'));
+      } else {
+        res.json(failed(('删除失败')));
+      }
     })
     .catch(() => {
       res.json(failed(('删除失败')));
