@@ -57,11 +57,12 @@ export const findList = ({ keyword = '', page = 1, size = 10 }, fields = '-__v')
  * @returns {Promise}
  */
 export const addArticle = (article) => {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     const articleEntity = new ArticleModel({
       ...article,
       publishDate: Date.now(),
       updateDate: Date.now(),
+      accessTotal: 0,
     });
     articleEntity.save((err, result, numberAffected) => {
       if (err) {

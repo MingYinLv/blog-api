@@ -11,29 +11,28 @@ const router = Router();
 
 // GET /article/list 获得文章列表
 // param keyword=xxx page
-router.get('/list', async (req, res) => {
+router.get('/list', async(req, res) => {
   const { keyword, page = 1, size = 10 } = req.query;
   const data = await findList({ keyword, page, size });
   res.json(success(data));
 });
 
 // GET /article/:articleId 获得单条文章信息
-router.get('/:articleId', async (req, res) => {
+router.get('/:articleId', async(req, res) => {
   const { articleId } = req.params;
   const data = await findById(articleId);
   res.json(success(data));
 });
 
 // POST /article/add 添加文章
-router.post('/add', checkLogin, async (req, res) => {
-  const { title, content, author, tag, type } = req.body;
+router.post('/add', checkLogin, async(req, res) => {
+  const { title = '', content = '', tag = '', type_id = '' } = req.body;
   const { user } = req.session;
-
   if (!title.trim()) {
     res.json(validateFaile('标题不能为空'));
   } else if (!content.trim()) {
     res.json(validateFaile('内容不能为空'));
-  } else if (!type.trim() || type.length < 32) {
+  } else if (!type_id.trim()) {
     res.json(validateFaile('文章分类错误'));
   } else {
     addArticle({
@@ -41,7 +40,7 @@ router.post('/add', checkLogin, async (req, res) => {
       content,
       author: user.username || '管理员',
       tag,
-      type,
+      type_id,
     }).then(({ result, line }) => {
       if (line > 0 && result) {
         res.json(success(result, '添加成功'));
