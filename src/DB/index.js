@@ -11,6 +11,7 @@ import TypeSchema from './Schema/TypeSchema';
 mongoose.Promise = Promise;
 const db = mongoose.createConnection('localhost', 'blog');
 
+export default db;
 
 export const ArticleModel = db.model('article', ArticleSchema, 'articles');
 export const PersonModel = db.model('person', PersonSchema, 'person');

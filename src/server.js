@@ -5,14 +5,17 @@
 import express from 'express';
 import session from 'express-session';
 import bodyParser from 'body-parser';
+import MongoStore from 'connect-mongo';
 import config from './config';
 import routes from './routes';
 import pkg from '../package.json';
 import { checkRefer } from './middleware/check';
 import setHeader from './middleware/setHeader';
+import DBConnection from './DB';
 
 const app = express();
 
+const MongoSession = MongoStore(session);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -26,6 +29,7 @@ app.use(session({
   cookie: {
     maxAge: config.session.maxAge, // 过期时间
   },
+  store: new MongoSession({ mongooseConnection: DBConnection }),
 }));
 
 // 注册路由

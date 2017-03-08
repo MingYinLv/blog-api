@@ -11,7 +11,7 @@ export default new Schema({
   updateDate: Number, // 最后更新时间
   author: String, // 作者
   tag: String,  // 文章标签
-  type: Schema.Types.ObjectId, // 文章分类Id
+  type_id: Schema.Types.ObjectId, // 文章分类Id
   accessTotal: Number, // 访问统计
 });
 
