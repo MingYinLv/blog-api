@@ -32,19 +32,20 @@ router.post('/add', checkLogin, async (req, res) => {
     const list = await findList({ keyword: name });
     if (list && list.length) {
       res.json(failed('该类型已存在'));
-      return 0;
-    }
-    addType({
-      name,
-    }).then(({ result, line }) => {
-      if (line > 0) {
-        res.json(success(result, '添加成功'));
-      } else {
+    } else {
+      addType({
+        name,
+      }).then(({ result, line }) => {
+        if (line > 0) {
+          res.json(success(result, '添加成功'));
+        } else {
+          res.json(failed('添加失败'));
+        }
+      }).catch(() => {
         res.json(failed('添加失败'));
-      }
-    }).catch(() => {
-      res.json(failed('添加失败'));
-    });
+      });
+    }
+
   }
 });
 
