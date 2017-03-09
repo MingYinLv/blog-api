@@ -35,6 +35,11 @@ app.use(session({
 // 注册路由
 routes(app);
 
+
+app.use((err, req, res) => {
+  res.status(500).end();
+});
+
 app.listen(config.port, () => {
   console.log(`${pkg.name} listening on port ${config.port}`);
 });

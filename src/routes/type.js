@@ -25,10 +25,15 @@ router.get('/:typeId', async (req, res) => {
 });
 
 router.post('/add', checkLogin, async (req, res) => {
-  const { name } = req.body;
+  const { name = '' } = req.body;
   if (!name || name.trim().length <= 0) {
     res.json(validateFaile('类型名称不能为空'));
   } else {
+    const list = await findList({ keyword: name });
+    if (list && list.length) {
+      res.json(failed('该类型已存在'));
+      return 0;
+    }
     addType({
       name,
     }).then(({ result, line }) => {

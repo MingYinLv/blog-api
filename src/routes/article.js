@@ -11,21 +11,21 @@ const router = Router();
 
 // GET /article/list 获得文章列表
 // param keyword=xxx page
-router.get('/list', async(req, res) => {
+router.get('/list', async (req, res) => {
   const { keyword, page = 1, size = 10 } = req.query;
   const data = await findList({ keyword, page, size });
   res.json(success(data));
 });
 
 // GET /article/:articleId 获得单条文章信息
-router.get('/:articleId', async(req, res) => {
+router.get('/:articleId', async (req, res) => {
   const { articleId } = req.params;
   const data = await findById(articleId);
   res.json(success(data));
 });
 
 // POST /article/add 添加文章
-router.post('/add', checkLogin, async(req, res) => {
+router.post('/add', checkLogin, async (req, res) => {
   const { title = '', content = '', tag = '', type_id = '' } = req.body;
   const { user } = req.session;
   if (!title.trim()) {
@@ -57,12 +57,12 @@ router.post('/add', checkLogin, async(req, res) => {
 router.post('/delete', checkLogin, (req, res) => {
   const { id } = req.body;
   deleteById(id)
-    .then(({ result }) => {
-      if (result.n > 0) {
-        res.json(success({}, '删除成功'));
-      } else {
-        res.json(failed(('删除失败')));
-      }
+    .then(() => {
+      // if (result.n > 0) {
+      res.json(success({}, '删除成功'));
+      // } else {
+      //   res.json(failed(('删除失败')));
+      // }
     })
     .catch(() => {
       res.json(failed(('删除失败')));

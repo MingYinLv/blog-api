@@ -38,10 +38,14 @@ export const deleteById = deleteByIdGenerator(ArticleModel);
  * @param [keyword] 关键字
  * @param [page] 页码
  * @param [size] 数量
+ * @param like 模糊查询
  * @param fields 查询的字段
  */
-export const findList = ({ keyword = '', page = 1, size = 10 }, fields = '-__v') => {
-  const reg = new RegExp(keyword, 'i');
+export const findList = ({ keyword = '', page = 1, size = 10, like = true  }, fields = '-__v') => {
+  let reg = keyword;
+  if (like) {
+    reg = new RegExp(keyword, 'i');
+  }
   return ArticleModel.find({}, fields)
     .or([{
       title: reg,

@@ -27,11 +27,15 @@ export const findById = findByIdGenerator(TypeModel);
  * @param keyword
  * @param page
  * @param size
+ * @param like 模糊查询
  * @param fields
  * @returns {Promise}
  */
-export const findList = ({ keyword = '', page = 1, size = 10 }, fields = '-__v') => {
-  const reg = new RegExp(keyword, 'i');
+export const findList = ({ keyword = '', page = 1, size = 10, like = true }, fields = '-__v') => {
+  let reg = keyword;
+  if (like) {
+    reg = new RegExp(keyword, 'i');
+  }
   return TypeModel.find({ name: reg }, fields)
     .skip((page - 1) * size)
     .limit(size)
