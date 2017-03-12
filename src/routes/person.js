@@ -6,6 +6,7 @@ import { Router } from 'express';
 // import { checkLogin } from '../middleware/check';
 import { login } from '../service/PersonService';
 import { success, failed } from '../util/responseTemplate';
+import { noLoginJSON } from '../middleware/check';
 
 const router = Router();
 
@@ -24,6 +25,14 @@ router.post('/login', (req, res) => {
     .catch(() => {
       res.json(failed('登陆失败, 请稍候再试。'));
     });
+});
+
+router.get('/check', (req, res) => {
+  if (req.session.user) {
+    res.json(success({}, '已登陆'));
+  } else {
+    res.end(noLoginJSON);
+  }
 });
 
 export default router;

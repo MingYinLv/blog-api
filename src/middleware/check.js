@@ -2,7 +2,7 @@
  * Created by MingYin Lv on 2017/2/19 下午3:02.
  */
 
-const noLoginJSON = Buffer.from(JSON.stringify({
+export const noLoginJSON = Buffer.from(JSON.stringify({
   error_code: 4,
   msg: '请登陆',
 }));
