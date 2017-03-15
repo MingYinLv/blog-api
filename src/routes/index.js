@@ -5,6 +5,7 @@
 import article from './article';
 import type from './type';
 import person from './person';
+import { failed } from '../util/responseTemplate';
 
 export default (app) => {
   app.use('/article', article);
@@ -12,5 +13,8 @@ export default (app) => {
   app.use('/person', person);
   app.use('*', (req, res) => {
     res.status(404).send('404 Request');
+  });
+  app.use((err, req, res, next) => {
+    res.json(failed());
   });
 };

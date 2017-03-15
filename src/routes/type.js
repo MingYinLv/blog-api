@@ -18,38 +18,43 @@ router.get('/list', async (req, res) => {
 });
 
 // GET /type/:typeId 获得单条类型信息
-router.get('/:typeId', async (req, res) => {
+router.get('/get/:typeId', (req, res) => {
   const { typeId } = req.params;
-  const data = await findById(typeId);
-  res.json(success(data));
+  findById(typeId).then((data) => {
+    res.json(success(data));
+  }).catch(() => {
+    res.json(failed('数据不存在'));
+  });
 });
 
-router.post('/add', checkLogin, async (req, res) => {
+router.post('/add', checkLogin, (req, res) => {
   const { name = '' } = req.body;
   if (!name || name.trim().length <= 0) {
     res.json(validateFaile('类型名称不能为空'));
   } else {
-    const list = await findList({ keyword: name });
-    if (list && list.length) {
-      res.json(failed('该类型已存在'));
-    } else {
-      addType({
-        name,
-      }).then(({ result, line }) => {
-        if (line > 0) {
-          res.json(success(result, '添加成功'));
-        } else {
+    findList({ keyword: name }).then((list) => {
+      if (list && list.length) {
+        res.json(failed('该类型已存在'));
+      } else {
+        addType({
+          name,
+        }).then(({ result, line }) => {
+          if (line > 0) {
+            res.json(success(result, '添加成功'));
+          } else {
+            res.json(failed('添加失败'));
+          }
+        }).catch(() => {
           res.json(failed('添加失败'));
-        }
-      }).catch(() => {
-        res.json(failed('添加失败'));
-      });
-    }
-
+        });
+      }
+    }).catch(() => {
+      res.json(failed('添加失败'));
+    });
   }
 });
 
-router.post('/update', checkLogin, async (req, res) => {
+router.post('/edit', checkLogin, (req, res) => {
   const { id, name } = req.body;
   if (!name || name.trim().length <= 0) {
     res.json(validateFaile('类型名称不能为空'));
@@ -67,7 +72,7 @@ router.post('/update', checkLogin, async (req, res) => {
   }
 });
 
-router.post('/delete', checkLogin, async (req, res) => {
+router.post('/delete', checkLogin, (req, res) => {
   const { id } = req.body;
   deleteById(id)
     .then(() => {
