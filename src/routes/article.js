@@ -4,28 +4,32 @@
 
 import { Router } from 'express';
 import { checkLogin } from '../middleware/check';
-import { findById, findList, addArticle, deleteById } from '../service/ArticleService';
+import { findById, findList, addArticle, deleteById, updateArticleById } from '../service/ArticleService';
 import { success, validateFaile, failed } from '../util/responseTemplate';
 
 const router = Router();
 
 // GET /article/list 获得文章列表
 // param keyword=xxx page
-router.get('/list', async (req, res) => {
+router.get('/list', async(req, res) => {
   const { keyword, page = 1, size = 10 } = req.query;
-  const data = await findList({ keyword, page, size });
-  res.json(success(data));
+  findList({ keyword, page, size }).then((data) => {
+    res.json(success(data));
+  });
 });
 
 // GET /article/:articleId 获得单条文章信息
-router.get('/:articleId', async (req, res) => {
+router.get('/get/:articleId', (req, res) => {
   const { articleId } = req.params;
-  const data = await findById(articleId);
-  res.json(success(data));
+  findById(articleId).then((data) => {
+    res.json(success(data));
+  }).catch(() => {
+    res.json(failed('数据不存在'));
+  });
 });
 
 // POST /article/add 添加文章
-router.post('/add', checkLogin, async (req, res) => {
+router.post('/add', checkLogin, (req, res) => {
   const { title = '', content = '', tag = '', type_id = '' } = req.body;
   const { user } = req.session;
   if (!title.trim()) {
@@ -67,6 +71,36 @@ router.post('/delete', checkLogin, (req, res) => {
     .catch(() => {
       res.json(failed(('删除失败')));
     });
+});
+
+// POST /article/edit 修改
+router.post('/edit', checkLogin, (req, res) => {
+  const { id = '', title = '', content = '', tag = '', type_id = '' } = req.body;
+  if (!id.trim()) {
+    res.json(validateFaile('数据不存在，无法修改!'));
+  } else if (!title.trim()) {
+    res.json(validateFaile('标题不能为空'));
+  } else if (!content.trim()) {
+    res.json(validateFaile('内容不能为空'));
+  } else if (!type_id.trim()) {
+    res.json(validateFaile('文章分类错误'));
+  } else {
+    updateArticleById({
+      _id: id,
+      title,
+      content,
+      tag,
+      type_id,
+    }).then((result) => {
+      if (result.n > 0) {
+        res.json(success({}, '修改成功'));
+      } else {
+        res.json(failed('修改失败'));
+      }
+    }).catch(() => {
+      res.json(failed('修改失败'));
+    });
+  }
 });
 
 export default router;
