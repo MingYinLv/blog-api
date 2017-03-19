@@ -19,7 +19,7 @@ export const login = ({ username, password }) => {
   }).exec();
 };
 
-export const updatePwd = (password) => {
+export const update = (query, person) => {
   // todo
-  return PersonModel.update(password).exec();
+  return PersonModel.update(query, person).exec();
 };

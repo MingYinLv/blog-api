@@ -11,4 +11,6 @@ export default new Schema({
   photo: String,
   username: String,
   password: String,
+  email: String,
+  company: String,
 });

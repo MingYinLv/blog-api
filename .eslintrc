@@ -32,6 +32,7 @@
     // 允许方法提前调用
     "no-use-before-define": [2, { "functions": false }],
     // 禁止在 else 中使用单独 if
-    "no-lonely-if": 0
+    "no-lonely-if": 0,
+    "no-underscore-dangle": 0,
   }
 }

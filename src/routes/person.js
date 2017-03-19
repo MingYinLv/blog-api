@@ -3,8 +3,8 @@
  */
 
 import { Router } from 'express';
-// import { checkLogin } from '../middleware/check';
-import { login } from '../service/PersonService';
+import { checkLogin } from '../middleware/check';
+import { login, update } from '../service/PersonService';
 import { success, failed } from '../util/responseTemplate';
 import { noLoginJSON } from '../middleware/check';
 
@@ -25,6 +25,21 @@ router.post('/login', (req, res) => {
     .catch(() => {
       res.json(failed('登陆失败, 请稍候再试。'));
     });
+});
+
+router.post('/update', checkLogin, (req, res) => {
+  const { password, sex, age, photo, email, company } = req.body;
+  update({
+    _id: req.session.user._id,
+  }, {
+    password, sex, age, photo, email, company,
+  }).then((result) => {
+    if (result.n > 0) {
+      res.json(success('修改成功'));
+    } else {
+      res.json(failed('修改失败'));
+    }
+  });
 });
 
 router.get('/check', (req, res) => {
