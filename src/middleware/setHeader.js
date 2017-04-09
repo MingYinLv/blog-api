@@ -9,5 +9,6 @@ export default (req, res, next) => {
     'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
     'Access-Control-Allow-Credentials': true,
     'Access-Control-Allow-Headers': 'x-requested-with,content-type',
+    'Content-Type': 'application/json; charset=utf-8',
   });
 };
