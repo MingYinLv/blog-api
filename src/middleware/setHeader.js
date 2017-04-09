@@ -3,7 +3,6 @@
  */
 
 export default (req, res, next) => {
-  next();
   res.set({
     'Access-Control-Allow-Origin': 'http://blog-admin.lvmingyin.com',
     'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
@@ -11,4 +10,5 @@ export default (req, res, next) => {
     'Access-Control-Allow-Headers': 'x-requested-with,content-type',
     'Content-Type': 'application/json; charset=utf-8',
   });
+  next();
 };

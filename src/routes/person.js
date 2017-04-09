@@ -3,10 +3,9 @@
  */
 
 import { Router } from 'express';
-import { checkLogin } from '../middleware/check';
+import { checkLogin, noLoginJSON } from '../middleware/check';
 import { login, update } from '../service/PersonService';
 import { success, failed } from '../util/responseTemplate';
-import { noLoginJSON } from '../middleware/check';
 
 const router = Router();
 
