@@ -6,6 +6,7 @@ import express from 'express';
 import session from 'express-session';
 import bodyParser from 'body-parser';
 import MongoStore from 'connect-mongo';
+import path from 'path';
 import config from './config';
 import routes from './routes';
 import pkg from '../package.json';
@@ -16,7 +17,8 @@ import DBConnection from './DB';
 const app = express();
 
 const MongoSession = MongoStore(session);
-
+console.log(path.join(__dirname, 'public'));
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(checkRefer);

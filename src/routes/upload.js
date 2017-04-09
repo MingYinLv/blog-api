@@ -21,7 +21,7 @@ router.post('/', (req, res) => {
     if (err) {
       console.log('parse error: ', err);
     } else {
-      res.json(success({ url: `/upload/${files.uploadFile[0].originalFilename}` }, '上传成功'));
+      res.json(success({ url: `/upload/${path.parse(files.uploadFile[0].path).base}` }, '上传成功'));
     }
   });
 });
