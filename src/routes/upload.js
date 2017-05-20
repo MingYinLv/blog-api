@@ -15,7 +15,6 @@ router.get('/', (req, res) => {
   res.json(success({}));
 });
 router.post('/', (req, res) => {
-  console.log(1);
   const form = new multiparty.Form({ uploadDir: path.join(__dirname, '../public/upload') });
   form.parse(req, (err, fields, files) => {
     if (err) {
